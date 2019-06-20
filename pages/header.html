@@ -1,0 +1,56 @@
+<html>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/modal.css">
+
+	<head>
+	<title>Сетевая библиотека имени Example</title>
+	</head>		
+
+	<body>
+		<div id="header">
+		<h1>Сетевая библиотека имени Example</h1>
+		</div>			 
+
+		<div id="navigation">
+		<h3><a href="index.php">На главную страницу</a>
+		<?php if(isset($_SESSION['log']))
+		{
+			echo $_SESSION['log'] . ' <a href="scripts/logout.php">Выход</a>';
+		}
+		else { ?>
+		<a href="pages/login.php">Вход</a>
+		<?php } ?>
+		
+		</div>			 
+
+		<div id="sidebar">
+		<ul>
+			<li><a href="index.php?page=about">О библиотеке</a><br><br></li>
+			<li><a href="index.php?page=catalogue">Каталог книг</a><br><br></li>
+			<li><a href="index.php?page=contacts">Контактная информация</a><br><br></li>
+			<li><a href="index.php?page=modal">Модальное окно</a><br><br></li>
+			
+			<?php							
+				if(isset($_SESSION['log']))
+				{									
+					if($_SESSION['level'] == '0')
+					{
+						if(isset($_GET['page']))
+						{
+							$p = $_GET['page'];		
+							
+							include "scripts/DataBase.php";	
+	
+							$c = 0;
+							$res = DB::doQuery("SELECT * FROM `webpage` WHERE url = '". $p .".php'", $c, false, true);
+							if($res != '')							
+								echo "<li><a href=\"pages/edit.php?p=" . $p . ".php\">Редактировать</a><br><br></li>";
+						}		
+						else
+							echo "<li><a href=\"pages/edit.php?p=index.html\">Редактировать</a><br><br></li>";						
+					}						
+				}
+			?>
+			
+		</ul>
+		</div>
